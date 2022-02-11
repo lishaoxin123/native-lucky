@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { useDisclose, useMount } from '../../hooks'
 import Popup, { PopupAction } from "../Popup"
 import { unitWidth as UW } from '../../utils/index'
+import { IActionSheetProps, IMenu } from './type'
 
 // 使用方式
 {/* <ActionSheet
@@ -16,21 +17,7 @@ import { unitWidth as UW } from '../../utils/index'
   </View>
 </ActionSheet> */}
 
-interface IActionSheetProps {
-  children: React.ReactNode;
-  menu: Array<IMenu>;
-  tipTxt?: string;
-  isShowTip?: boolean;
-  cancelTxt?: string;
-  isShowCancel?: boolean;
-  onSelect?: (val: IMenu) => void;
-}
 
-type IMenu = {
-  name: string;
-  id: string | number | undefined;
-  isDisabled?: boolean;
-}
 
 const ActionSheet = (props: IActionSheetProps) => {
   const {
@@ -57,7 +44,7 @@ const ActionSheet = (props: IActionSheetProps) => {
       <View style={styles.container}>
         {isShowTip && _renderTip}
         {
-          menu.map((val: IMenu) => <Item {...val} />)
+          menu.map((val: IMenu, index: number) => <Item key={val.id || index} {...{index,...val}} />)
         }
         {isShowCancel && _renderCancelBtn}
       </View>
@@ -65,18 +52,15 @@ const ActionSheet = (props: IActionSheetProps) => {
   }
 
   const Item = (props: IMenu) => {
-    const { id, name, isDisabled = false } = props
-    
+    const { name, isDisabled = false } = props
     const handleSelect = () => {
       onSelect({...props})
       PopupRef.current?._closePopup()
     }
-
     return (
       <TouchableOpacity
         style={[styles.item, styles.space]}
         disabled={isDisabled}
-        key={id}
         onPress={handleSelect}>
         <Text>{name}</Text>
       </TouchableOpacity>
@@ -104,6 +88,7 @@ const ActionSheet = (props: IActionSheetProps) => {
   return (
     <>
       <Popup
+        position="top"
         onRef={PopupRef}
         renderContent={_renderContent}
       >

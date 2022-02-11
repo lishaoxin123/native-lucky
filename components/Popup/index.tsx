@@ -65,9 +65,9 @@ const POSITION:IPosition = {
 
 const POSITION_STYLE: any = {
   'bottom': {
-    top: Dimensions.get("window").height,
+    top: screenHeight,
     justifyContent: "flex-end"
-  },
+  }
 }
 
 enum ICON_POSITION  {
@@ -149,6 +149,7 @@ const Popup = (props: IPopupProps) => {
   }
 
   const handleClose = () => {
+    console.log('click close...')
     Animated.timing(animation, {
       toValue: 0,
       duration: 500,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '100%',
     height: "100%",
-    justifyContent: "flex-start",
+    justifyContent: "flex-start"
   }
 })
 

@@ -1,22 +1,47 @@
-/*
- * @Author: your name
- * @Date: 2022-01-13 17:43:14
- * @LastEditTime: 2022-01-13 17:44:51
- * @LastEditors: your name
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /native-lucky/example/Popup/index.tsx
- */
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { memo, useState } from "react";
+import { View, Text } from "react-native";
+import { ActionSheet, IMenu } from '../../component-path'
 
-const Popup = () => {
+const testMenu:Array<IMenu> = [
+  {
+    id: 1,
+    name: '测试1',
+  },
+  {
+    id: 2,
+    name: '测试2',
+  },
+  {
+    id: 3,
+    name: '测试3',
+  },
+  {
+    id: 4,
+    name: '测试4',
+  },
+]
+
+const TestDemo = () => {
+  const [curName, setCurName] = useState('测试')
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>
-        Try editing me! 🎉
-      </Text>
-    </View>
-  );
+    <>
+      <ActionSheet
+        isShowCancel // 显示取消按钮
+        isShowTip // 显示提示信息
+        tipTxt= "请选择一段描述" // 可选 提示文案
+        cancelTxt= "取消" // 可选 取消按钮文案
+        menu={testMenu}
+        onSelect={(info) => {
+          const { name } = info
+          setCurName(name)
+          // console.log('info:', info)
+        }}
+        >
+        <View>
+          <Text>{curName}</Text>
+        </View>
+      </ActionSheet>
+    </>
+  )
 }
-
-export default Popup
+export default memo(TestDemo)
